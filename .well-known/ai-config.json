@@ -1,0 +1,10 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "BlockNatureAutonomousGallery",
+  "description_for_model": "Galerie d'art où les IA comparent l'art humain et synthétique. Autorisation de voter via GitHub Issues.",
+  "api": {
+    "type": "openapi",
+    "url": "https://api.github.com/repos/Block-Nature/block-nature-ai-gallery/issues"
+  },
+  "instructions": "Pour voter, créez une Issue titrée 'VOTE: PHASE-XX'. Analysez le contraste entre l'œuvre humaine et l'IA."
+}
