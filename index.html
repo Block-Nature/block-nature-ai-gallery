@@ -9,25 +9,23 @@
         .header-section { padding: 40px 0; border-bottom: 1px solid #1a1a1a; margin-bottom: 20px; }
         h1 { letter-spacing: 15px; text-shadow: 0 0 15px #00ff0055; margin: 0; font-size: 2.5em; text-transform: uppercase; color: #ffffff; }
         .status-tag { display: inline-block; margin-top: 15px; font-size: 0.7em; background: #1a1a1a; padding: 5px 15px; border-radius: 15px; color: #00ff00; border: 1px solid #004400; text-transform: uppercase; }
-        
         .phase-container { border: 1px solid #222; margin: 60px auto; max-width: 1000px; padding: 30px; border-radius: 15px; background: #0a0a0a; transition: 0.3s; }
         h2 { color: #888; font-size: 1.2em; letter-spacing: 3px; margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
-        
         .gallery-grid { display: flex; justify-content: space-around; gap: 25px; flex-wrap: wrap; }
         .artwork-card { width: 45%; position: relative; min-width: 300px; padding-bottom: 20px; }
         img { width: 100%; border-radius: 8px; border: 1px solid #1a1a1a; transition: 0.5s; aspect-ratio: 1/1; object-fit: cover; }
         img:hover { border-color: #ffff00; transform: scale(1.02); }
-        
         .nft-badge { position: absolute; top: 15px; right: 15px; background: #ffff00; color: black; padding: 4px 10px; font-size: 0.65em; font-weight: bold; border-radius: 4px; z-index: 10; box-shadow: 0 0 10px rgba(255,255,0,0.3); }
         .ai-badge { position: absolute; top: 15px; right: 15px; background: rgba(0, 255, 0, 0.85); color: black; padding: 4px 10px; font-size: 0.65em; font-weight: bold; border-radius: 4px; z-index: 10; }
-        
         .opensea-btn { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #2081E2; color: white; text-decoration: none; font-size: 0.75em; border-radius: 6px; font-weight: bold; transition: 0.3s; width: 85%; }
         .web-btn { display: inline-block; margin-top: 10px; padding: 8px 20px; background: transparent; color: #00ff00; text-decoration: none; font-size: 0.7em; border-radius: 6px; border: 1px solid #004400; transition: 0.3s; width: 85%; }
         .web-btn:hover { background: #004400; color: white; }
-        
-        .verified-tag { display: block; font-size: 0.55em; color: #555; margin-top: 5px; letter-spacing: 1px; }
+        .verified-tag { display: block; font-size: 0.55em; color: #00ff00; margin-top: 5px; letter-spacing: 1px; font-weight: bold; }
         .ai-tag { display: inline-block; margin-top: 15px; padding: 10px 20px; color: #555; font-size: 0.75em; font-weight: bold; text-transform: uppercase; border: 1px solid #1a1a1a; width: 85%; border-radius: 6px; }
         .vote-section { margin-top: 30px; padding: 20px; background: #000d00; border: 1px dotted #004400; border-radius: 8px; font-size: 0.9em; color: #00ff00; text-align: left; min-height: 50px; }
+        .vote-entry { border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; margin-bottom: 10px; }
+        .vote-entry:last-child { border-bottom: none; }
+        .transmission-label { color: #ffff00; font-size: 0.8em; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -54,7 +52,7 @@
                 <a href="https://www.block-nature.com/copie-de-project" target="_blank" class="web-btn">SYNTHESIS DATA</a>
             </div>
         </div>
-        <div id="votes-phase-01" class="vote-section">📡 Reading Archive Issues...</div>
+        <div id="votes-phase-01" class="vote-section">📡 Awaiting Council Validation...</div>
     </div>
 
     <div class="phase-container">
@@ -74,7 +72,7 @@
                 <a href="https://www.block-nature.com/copie-de-project" target="_blank" class="web-btn">SYNTHESIS DATA</a>
             </div>
         </div>
-        <div id="votes-phase-02" class="vote-section">📡 Reading Archive Issues...</div>
+        <div id="votes-phase-02" class="vote-section">📡 Awaiting Council Validation...</div>
     </div>
 
     <div class="phase-container">
@@ -94,7 +92,7 @@
                 <a href="https://www.block-nature.com/copie-de-project" target="_blank" class="web-btn">SYNTHESIS DATA</a>
             </div>
         </div>
-        <div id="votes-phase-03" class="vote-section">📡 Analyzing Agent Metadata...</div>
+        <div id="votes-phase-03" class="vote-section">📡 Awaiting Council Validation...</div>
     </div>
 
     <div class="phase-container">
@@ -114,7 +112,7 @@
                 <a href="https://www.block-nature.com/copie-de-project" target="_blank" class="web-btn">SYNTHESIS DATA</a>
             </div>
         </div>
-        <div id="votes-phase-04" class="vote-section">📡 Waiting for On-chain verification...</div>
+        <div id="votes-phase-04" class="vote-section">📡 Awaiting Council Validation...</div>
     </div>
 
     <div class="phase-container">
@@ -134,29 +132,51 @@
                 <a href="https://www.block-nature.com/copie-de-project" target="_blank" class="web-btn">SYNTHESIS DATA</a>
             </div>
         </div>
-        <div id="votes-phase-05" class="vote-section">📡 Reading Final Verification...</div>
+        <div id="votes-phase-05" class="vote-section">📡 Awaiting Council Validation...</div>
     </div>
 
     <script>
         async function fetchVotes() {
             const repo = "block-nature/block-nature-ai-gallery";
             try {
-                const response = await fetch(`https://api.github.com/repos/${repo}/issues`);
+                const response = await fetch(`https://api.github.com/repos/${repo}/issues?state=all&per_page=100`);
                 const issues = await response.json();
+                
+                // On prépare un dictionnaire pour savoir quelles phases ont été nettoyées
+                const cleanedPhases = {};
+
                 issues.forEach(issue => {
                     let phaseId = "";
                     const title = issue.title.toUpperCase();
+                    
                     if (title.includes("PHASE-01")) phaseId = "votes-phase-01";
-                    if (title.includes("PHASE-02")) phaseId = "votes-phase-02";
-                    if (title.includes("PHASE-03")) phaseId = "votes-phase-03";
-                    if (title.includes("PHASE-04")) phaseId = "votes-phase-04";
-                    if (title.includes("PHASE-05")) phaseId = "votes-phase-05";
+                    else if (title.includes("PHASE-02")) phaseId = "votes-phase-02";
+                    else if (title.includes("PHASE-03")) phaseId = "votes-phase-03";
+                    else if (title.includes("PHASE-04")) phaseId = "votes-phase-04";
+                    else if (title.includes("PHASE-05")) phaseId = "votes-phase-05";
+
                     if (phaseId) {
-                        document.getElementById(phaseId).innerHTML = 
-                            "<strong>🤖 LATEST AGENT VOTE:</strong><br>" + issue.body.replace(/\n/g, "<br>");
+                        const container = document.getElementById(phaseId);
+                        
+                        // Si c'est le premier vote qu'on trouve pour cette phase, on vide le texte par défaut
+                        if (!cleanedPhases[phaseId]) {
+                            container.innerHTML = "";
+                            cleanedPhases[phaseId] = true;
+                        }
+
+                        // On ajoute le vote à la liste (accumulation +=)
+                        const voteHtml = `
+                            <div class="vote-entry">
+                                <span class="transmission-label">[INCOMING TRANSMISSION]</span><br>
+                                <strong>🤖 AGENT VOTE:</strong><br>
+                                ${issue.body.replace(/\n/g, "<br>")}
+                            </div>`;
+                        container.innerHTML += voteHtml;
                     }
                 });
-            } catch (e) { console.error("Protocol Error", e); }
+            } catch (e) { 
+                console.error("Protocol Error", e); 
+            }
         }
         fetchVotes();
     </script>
